@@ -1,0 +1,125 @@
+<html>
+<h1>Lab 1: Your First Program</h1>
+<h2>Hello, World!</h2>
+<h3>Learning to Print to Console</h3>
+
+<p>Welcome to our Java Course. We are Capital Bots, team #14575</p>
+
+<p>For your first Java program, you will learn to print out something to the console. To do this, type in <code>public
+    class HelloWorld{}</code></p>
+
+<p>Writing this line of code specifies the name of the file to the Java decompiler.</p>
+
+<ul>
+    <li>Public specifies that any other programs can see the contents of the Java file. This becomes important in large
+        programs where many Java files are used
+    </li>
+
+    <li>Class specifies that the file being written is in fact a Java Class file. Java Class files just mean that the
+        file is filled with code to be run. Although other types of Java files exist, like enumerations and interfaces,
+        those are not used as much and are for more advanced programs.
+    </li>
+
+    <li>HelloWorld is the name of the Java Class. You can name your Java class whatever you want as long as it only has
+        letters, but as a general rule of thumb, capitalize the first letter of every word.
+    </li>
+
+    <li>Lastly, the curly braces specify to Java that everything within them is part of the HelloWorld Java Class.</li>
+</ul>
+
+<p> Next type in <code>public static void main(String[] args){}</code> in between the curly braces. You should have
+    <code>public class HelloWorld{public static void main(String[] args){}}</code></p>
+
+<p>This code is the main method or the part of the program that Java runs when the Java class is run. Let’s go through
+    each part of it.</p>
+
+<ul>
+    <li>Public once again specifies that any other files can see the contents of the Java method.</li>
+
+    <li>In Java, a static member is a member of a class that isn’t associated with an instance of a class. Instead, the
+        member belongs to the class itself. As a result, you can access the static member without first creating a class
+        instance. This is kind of complicated and will be explained later in the course. For now, remember that the main
+        method always has static in it.
+    </li>
+
+    <li>Void specifies to the decompiler that this method will not return anything. This also may confuse you, but we
+        will go over methods in more detail later in the course.
+    </li>
+
+    <li>Main is the name of the method. Methods can be called anything as long as it only uses letters, but for Java to
+        run the method, it must be called main. Again, you will learn more about methods later.
+    </li>
+
+    <li>In the parenthesis, we have String[] args. A String is one of the data types which you will learn about today.
+        It is just a string of characters combined, hence the name string. The [] part signifies that it is actually a
+        string array, which means that it is a bunch of strings combined. If a string is like a word, imagine a string
+        array to be a sentence, which is multiple words combined.
+    </li>
+
+    <li>Finally, the curly braces signal that everything inside them is part of the main method, meaning they will get
+        run.
+    </li>
+</ul>
+
+<p>You now have a space where you can run code and have it work, but it’s pretty hard to look at. Since things in Java
+    are split up by curly braces and parentheses, Java doesn't really care about how long spaces are. This means you can
+    format code to make it look better. Try pressing enter after each curly brace to make the code easier to look at. It
+    should look like this:</p>
+
+<pre>
+   <code>
+public class HelloWorld{
+   public static void main(String[] args){
+       //this is where you enter code
+   }
+}
+   </code>
+</pre>
+
+<p>You can also add tabs like we did to make it easier to see what the curly braces contain. In the future, you can
+    format your code easily by using an IntelliJ shortcut: Ctrl+Alt+L (CMD+OPTION+L for MacOS). However, not all IDE’s,
+    or development environments have this, so don’t rely on it too much.</p>
+
+<p>In the above piece of code, you might have noticed the double slashes followed by “this is where you enter code”.
+    This is called a comment. The double slashes signify a comment. A comment is something the decompiler will skip
+    over, meaning that the decompiler doesn’t run it. Comments are a good way to add notes to your code. Comments are
+    often used as reminders, a tool in debugging, and also explanations of complicated code so that others can
+    understand what each line does more easily. In Java, a single line comment can be anything followed by a double
+    slash(//), and a multiline comment starts with /* and ends with */, with any text you want in between.</p>
+
+<p>Now, it’s time to write the line of code that allows you to actually print a line to the console. Underneath the
+    comment would, type <code>System.out.println(“Hello, World!”)</code> Once again, let’s go through each part of this
+    statement.</p>
+
+<ul>
+    <li>System signifies that the command is calling the system. In this case, you are using the system to print
+        something to console.
+    </li>
+    <li>Out signifies that the statement is part of the output stream, meaning it is something that sends something to
+        the user. In this case, whatever you are printing in console.
+    </li>
+    <li>Println tells the decompiler to print on a new line. If you want to print on the existing line, you can just use
+        System.out.print, but it is not used as often.
+    </li>
+    <li>The parenthesis tells the decompiler to print whatever is inside. You can put a lot of things inside those
+        parentheses like variables and operators, but to print words like Hello, World!, you need to specify to the
+        decompiler that you are typing a string, which as mentioned above, is a grouping of characters. Again, you’ll
+        learn more about strings today. To tell the decompiler that you are typing a string, just use quotation marks.
+    </li>
+</ul>
+<p>Your program is now complete! You can run the program by pressing the play button to the left of the first line of
+    code. If you can’t find it or received an error, ask someone for help. If done right, you should receive a message
+    saying Hello, World! in console on the bottom of your screen. Make sure it works correctly before moving on.</p>
+<p>Let’s check how your code compares to our solution. Press the “Check” button, then compare and contrast the two
+    snippets of code by pressing “Peek Solution...”. Next, return here and continue with the exercise.</p>
+<p>You can now experiment a little bit. Try changing the words in the quotation marks to your name, and see what happens
+    when you run it. As a bonus challenge, try writing some code that displays your name on one line and your favorite
+    color on the next line. For example:</p>
+<p>Bob</p>
+<p>Blue</p>
+<p>Only press the hint if you are really stuck.
+<div class="hint">You type another System.out.println(“”) statement after the first one!</div>
+After finishing, show one of us so we can check it for you</p>
+<p>If you got this far, congratulations! You have just finished your first program! Ask for something to work on if you
+    have finished early, or try experimenting around with different things.</p>
+</html>

@@ -1,0 +1,30 @@
+<html>
+<h1>Lab 11: Intro to Constructors</h1>
+<h2>Passing Data to Classes</h2>
+<h3>What are Constructors</h3>
+
+<p>Let's introduce you to constructors. These are just special methods, much like the main method. However, they pass data to the class. This means they set inital values for objects, which you learned about earlier.</p>
+<p>Let's make a basic constructor. In most cases constructors are used for multiple classes to communicate effectively, but we will just do a basic example here within one class. We can start by making a class variable.
+You can do this by making a variable named x outside the main method. Normally, these are done above the main method. Do not assign this variable a value. Remember to keep them inside the class though!</p>
+<p>Next, create a constructor. Constructors always have the same name as the class, so in this case it would be<code>public ConstructorPractice(){}</code></p>
+<p>Notice that there is no return type or static. You can pass parameters to the constructor as well. This is often very useful for storing data into objects, but we will not do it in this example. Instead, just set the variable x you set above to 10 in the constructor. This sets the variable x you made above 10 by default.</p>
+<p>Now, if you make an object of the class like this in the main method:<code>ConstructorPractice object = new ConstructorPractice();</code>, you can call the attribute of the class in a print statement to demonstrate what a constructor does. Try typing this in after making the class object:<code>System.out.println(object.x);</code>.
+Since the default is set to 10 by the constructor, 10 will be printed in the console. Try running the code and see what you get. Since this is a homework lab, look at the hint for the full code if you need help.<p>
+<p><div class="hint"><code>
+  public class ConstructorPractice {
+  int x;
+  public ConstructorPractice() {
+  x = 10;
+  }
+  public static void main(String[] args) {
+  ConstructorPractice object = new ConstructorPractice();
+  System.out.println(object.x);
+  }
+  }</code></div></p>
+
+<p>That's all the code you have to do for this homework lab. Congratulations! However, you still should read the text below for more information.</p>
+<p>Although it's not demonstrated here, the main strength on a constructor comes from being able to give classes data. Here you just set a default.
+However, you have used constructors before. When you initialized a Robot in one of the previous classes, you might have given it some parameters. For example: Face North, or spawn in this position.
+The Robot class, uses the data you pass to it to spawn a Robot, but how does it get the data? The constructor! In the Robot class, a constructor sets the default values, and also allows you to pass data to the Robot class to override those values. Pretty cool!</p>
+
+</html>

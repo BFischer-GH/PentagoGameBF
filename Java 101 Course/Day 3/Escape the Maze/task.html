@@ -1,0 +1,28 @@
+<html>
+<h1>Lab 8</h1>
+<h2>Escape the Maze</h2>
+<h3>Objective: Class methods vs Instance methods</h3>
+
+<p>You may have noticed that Robots don't know how to turn right. In object oriented programming, it is common practice
+    not to change the classes that are given to you. Instead, you extend Robot and define the new class which will have
+    the power to turn right. Study the structure of Athlete, especially lines 13 to 19. In these instance methods, we
+    “teach” Athlete how to turn around and how to turn right.</p>
+
+<p>The keyword extends means that an athlete isa robot. "Isa" means that the Athlete class inherits the behaviors and
+    attributes of the Robot class; the methods from Robot do not have to be re-written. We can use turnLeft in our
+    definition of turnRight and turnAround, and any athlete object can use any robot method. When you write methods in
+    Athlete, think of programming an Athlete in general, not of programming any specific athlete object.</p>
+
+<p>Athlete is a general resource class that will be useful in a wide range of applications. The application called
+    Lab08, which has the main method, will use the Athlete class. We sometimes say that Lab08 hasa athlete.</p>
+
+<p>Lines 5-11 are constructors, we will explain this to you</p>
+
+<h4>Instructions</h4>
+
+<p>Open Athlete.java. Implement the methods turnRight and turnAround. Do not run Athlete. Open Lab08.java and use the
+    “maze” map at size 8x8. Instantiate one athlete object and direct it to escape the maze. Leave a trail of beepers to
+    mark the path. By default, athletes begin with an infinite number of beepers.</p>
+
+<p>After finishing, try implementing a putAndMove method in Athlete, and use it in Lab08</p>
+</html>

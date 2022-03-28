@@ -1,0 +1,43 @@
+<html>
+<h1>Lab 6: Intro to Methods</h1>
+<h2>Squaring Lab</h2>
+<h3>What are Methods?</h3>
+
+<p>Let's learn about methods now. What are they?</p>
+
+<p>Methods are essentially blocks of code that run whenever you call them. Let's say you have a piece of very long code
+    that you need to use multiple times in your program. Instead of copy pasting the code over and over again, you can
+    make it into method, and call it whenever you need that set of code. For an example, think of a calculator. The other
+interesting part of methods is that you can pass data to it. This means that you can feed it data, and have it give back
+an output of your choosing!</p>
+
+<p>Let's try it out by making a simple calculator of sorts. For this example, let's make a calculator that can solve exponents!</p>
+<p>First, create two integer variables in the main method, above the print statements. Call them x and y. For example:</p>
+<code>int x = 4; int y = 8;</code>
+<p>You can choose whatever numbers you would like.</p>
+<p>Since the main method is actually also a method, we cannot make a method inside of it. Although you can call a method
+from anywhere as long as it is public, you cannot make a method in another method. Let's make a method now that can square a number!</p>
+<p>Outside of the main method, type in <code>public static int square(int x){  }</code> As we have done previously, let's go through each part of it.</p>
+<ul>
+    <li>This syntax is similar to the main method because both are methods. All methods have the same basic structure. First,
+    you have an access modifier, which tells Java what is able to read the method. If you omit this, Java will by default make it private.</li>
+    <li> Next, we have static. Like before, this is a much more complicated part of Java and OOPS in general, but for now, you should know that and class methods should have it.</li>
+    <li>int shows that the method will return something back to us. Since it is a method that squares numbers, we need it to return a number back to us to display.</li>
+    <li>Next, we have the name, which is what we use to identify and call it whenever we need.</li>
+    <li>Lastly, we have the parameter, or what we will use to send data into the method. Since the method needs a number to be able to square it, here we tell Java that we will give the method an input.
+        Specifically, we will give the method an integer input.</li>
+</ul>
+    <p>Now, let's type up the main part of this method. To square a number we need to multiply it by itself, so type in <code>int u = x * x; return u;</code> into the curly brackets. Let's go over what this does.</p>
+    <ul>
+        <li>First, we make a variable set to double x. What is x? X is actually the input into the method. Since we set int x as the parameters to the method, x represents the input. U is double x.</li>
+        <li>Next, we have the return statement, which return something to our code. In this case, the answer. We must have this return an integer since we set the return type of this method as int.</li>
+    </ul>
+<p>However, we can make this simpler. Instead of using a variable, we can just compute the square in the return line of code. Delete what you wrote previously and instead write <code>return x * x;</code>
+You now have a working squaring method. To check and see if it works, lets print the output. to call a method, type in the name and put the parameters in parenthesis after it. We can call it from a print statement,
+    so inside the first print statement in the main method, type in <code>square()</code>. However, we need to give it an input. Put y in the middle of the parenthesis. Try running the code now. You should have the square of integer y printed to console.</p>
+<p>For the next challenge, make a method that can do exponents of any number. This method requires 2 inputs, a number, and the exponent. Let x be the number and y be the power. Try making a method called exp, which returns a double. To calculate exponents in Java, use <code>Math.pow()</code>. This is
+actually another method that Java has automatically, but just stick with it for the point of this exercise. Essentially put this method in another one that you wrote. to actually use this prebuilt method, the sytax is <code>Math.pow(number,exponent)</code>. After you finish, check your answer to see how out solution compares! Make sure to let us know if you need help or have finished.</p>
+<p>Additionally, as a bonus fact, the two methods you (hopefully) wrote are class methods, meaning they are used only in the class they are written in. Tomorrow, you will learn about instance methods.</p>
+
+
+</html>

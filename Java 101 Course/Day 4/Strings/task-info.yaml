@@ -1,0 +1,16 @@
+type: theory
+files:
+- name: src/Main.java
+  visible: true
+  text: |-
+    public class Main {
+       public static void main(String[] args) {
+          String s = "This is a string.";
+          char y = s.charAt(6);
+          System.out.println(y);
+       }
+    }
+  learner_created: false
+status: Unchecked
+record: -1
+post_submission_on_open: true

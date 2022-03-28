@@ -1,0 +1,41 @@
+type: theory
+files:
+- name: src/PolymorphismLab.java
+  visible: true
+  text: |-
+    public class PolymorphismLab {
+        public static void main(String[] args) {
+
+        }
+    }
+  learner_created: false
+- name: src/Animal.java
+  visible: true
+  text: |-
+    class Animal {
+        public void sound() {
+            System.out.println("Sound");
+        }
+    }
+  learner_created: false
+- name: src/Dog.java
+  visible: true
+  text: |-
+    class Dog extends Animal {
+        public void sound() {
+            System.out.println("Woof Woof");
+        }
+    }
+  learner_created: false
+- name: src/Lab.java
+  visible: true
+  text: |-
+    class Lab extends Dog {
+        public void sound() {
+            System.out.println("Ruff Ruff");
+        }
+    }
+  learner_created: false
+status: Unchecked
+record: -1
+post_submission_on_open: true

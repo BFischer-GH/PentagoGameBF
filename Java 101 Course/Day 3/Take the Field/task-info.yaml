@@ -1,0 +1,36 @@
+type: theory
+files:
+- name: src/Lab09.java
+  visible: true
+  placeholders:
+  - offset: 100
+    length: 17
+    placeholder_text: Finish the method
+    initial_state:
+      length: 17
+      offset: 100
+    initialized_from_dependency: false
+    selected: false
+    status: Unchecked
+    encrypted_possible_answer: |-
+      arg.move();
+              arg.move();
+              arg.move();
+              arg.turnRight();
+              arg.move();
+              arg.move();
+  text: |-
+    public class Lab09 {
+        public static void takeTheField(Athlete arg) {
+            arg.move();
+            Finish the method
+        }
+
+        public static void main(String[] args) {
+
+        }
+    }
+  learner_created: false
+status: Unchecked
+record: -1
+post_submission_on_open: true

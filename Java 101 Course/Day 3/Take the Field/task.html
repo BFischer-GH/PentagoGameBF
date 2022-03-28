@@ -1,0 +1,39 @@
+<html>
+<h1>Lab 9</h1>
+<h2>Take The Field</h2>
+<h3>Objective: Inheritance, Writing Constructors and Classes</h3>
+
+<p>A class method conveniently stores code that is accessible to anyone, without first creating an object (the class
+    "knows"). Mathematical formulas, such as those in the Math class, are examples of class methods. Often class methods
+    control the environments for other objects. You have already seen <code>Display.setSize</code> and <code>Display.openWorld</code>.
+    All class methods are marked by the keyword <code>static</code>. Class methods are usually placed before the main
+    method, but
+    they don’t have to be.</p>
+
+<p>An instance method is a method written in a class that must be instantiated (the object “knows”) before being used.
+    Every Athlete should know how to <code>turnRight</code>. Therefore, turning right is appropriately defined as an
+    instance method within the Athlete class--the object knows. In contrast, taking the field is something that is
+    specific to this lab only. Therefore, taking the field is appropriately defined as a class method within the Lab09
+    class. All the athletes in Lab04 will go from the locker room (Point A) to the field (Point B) by executing the code
+    in the class method <code>takeTheField.</code></p>
+
+<p>We can use this class method with any athlete object by passing the object. For instance, if we have athletes <code>maria</code>
+    and <code>gary</code> defined in main, we can tell each to take the field with the commands:</p>
+
+<pre>
+    <code>
+takeTheField(maria);
+takeTheField(gary);
+    </code>
+</pre>
+
+<p>Notice that we do NOT say <code>maria.takeTheField()</code>. This is because <code>takeTheField</code> is not part of
+    an Athlete object. It is "known" by the Lab09 class. We call <code>takeTheField</code> and pass the object to the
+    argument <code>arg</code>, which points to whatever Athlete has been passed; first maria, then gary.</p>
+
+<h4>Instructions</h4>
+
+<p>Open Lab09.java and use the “arena” map at size 10x10. Create six athletes starting in the locker room; use the
+    default constructor. Create one object with the 4-arg constructor to put the coach at the side of the field. Have
+    your team get positioned for the start of the game as shown</p>
+</html>

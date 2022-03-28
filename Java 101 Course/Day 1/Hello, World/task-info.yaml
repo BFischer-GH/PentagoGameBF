@@ -1,0 +1,28 @@
+type: theory
+files:
+- name: src/HelloWorld.java
+  visible: true
+  placeholders:
+  - offset: 0
+    length: 124
+    placeholder_text: Enter Code Here
+    initial_state:
+      length: 15
+      offset: 0
+    initialized_from_dependency: false
+    selected: true
+    status: Unchecked
+    encrypted_possible_answer: |-
+      public class HelloWorld {
+         public static void main(String[] args) {
+            System.out.println("Hello, World!");
+         }
+      }
+  text: Enter Code Here
+  learner_created: false
+status: Unchecked
+feedback:
+  message: Unable to execute task `Hello, World`, main method is missing
+  time: Thu, 24 Feb 2022 13:23:17 UTC
+record: -1
+post_submission_on_open: true

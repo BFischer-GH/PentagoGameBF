@@ -1,0 +1,49 @@
+<html>
+<h1>Lab 7: Intro to Conditional Statements</h1>
+<h2>Squaring Lab</h2>
+<h3>Basic If Statements</h3>
+
+<p>Let's introduce you to conditional statements! Conditional statements are essentially how your program can make choices. It is normally in the form of an if statement, but it can be found in other forms too! Let's explore if statements today.</p>
+
+<p>Think about it like real life. If you need a haircut, you go to the barber, but if you need groceries, you go to the supermarket. That's essentially how conditional statements work in Java on a basic level.
+In fact, they can do more than just check if something is true or false. In the above example, needing a haircut or needing groceries are represented by booleans, since they can only be true or false. Java conditional statements can check if objects are (The corresponding symbols are beside them): </p>
+<ul><li>Less than - <</li><li>Less than or equal to - <=</li><li>Greater than - ></li><li>Greater than or equal to - >=/li><li>Equal to - ==</li><li>Not equal to - !</li></ul>
+
+<p>Let's try it out by making a simple if statement. For this example, let's create the example above. Make a boolean representing if you need groceries or not in the main method. Then, use the following syntax: <code>if(condition){then}</code></p>
+<p>Using the above syntax, just enter the name of the boolean as the condition, and a print statement that says "I will go to the store" as the then</p>
+<p>In this case, you should have:</p>
+
+<pre>
+   <code>
+    public class ConditionalStatementPractice{
+        public static void main(String[] args){
+            boolean groceries = true; // or false if you would like
+            if(groceries){
+                System.out.println("I need to go to the store!");
+            }
+        }
+     }
+   </code>
+  </pre>
+<p>Test your code now! Ask us for help if you need it.</p>
+  <p>Java recognized when a boolean is in the condition, so you don't have to do anything like <code>groceries == true</code> in the condition. However, you do need to do this if you are working with other data types.</p>
+  <p>For the next portion of the Lab, make an integer variable, and make an if statement to check if is below 10. However, this time add an if else statement to the end of it. This is like a continuation of the previous question. If this... then do this... otherwise, if this instead, do this... Make it check if the number is greater than 10. It should look like below.</p>
+<pre>
+   <code>
+    public class ConditionalStatementPractice{
+        public static void main(String[] args){
+           int testing = 7; //change this to test your program
+            if(testing < 10){
+                System.out.println("testing is less than 10");
+            } else if (testing > 10){
+                System.out.println("testing is greater than 10");
+            }
+        }
+     }
+   </code>
+  </pre>
+<p>Test out your code now!</p>
+<p>One last thing in this lab, you can also add else statements to the end of if or else if statements, that only run if all the above statements have not. The syntax is the same as an else if statement, but without the conditional part. Also, the keyword is just else. It looks like this:<code>if(condition){code}else{code}</code></p>
+<p>Try adding it to your if statement and make it say "testing is equal to 10"</p>
+<p>Try out your code! Ask us if you need help. If you finished early, ask us for bonus tasks or experiment around with other data types and use if statements with them.</p>
+</html>
