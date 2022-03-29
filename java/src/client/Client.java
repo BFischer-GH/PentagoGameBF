@@ -1,5 +1,6 @@
 package client;
 
+import game.Board;
 import utils.TextIO;
 
 import java.io.BufferedReader;
@@ -31,10 +32,12 @@ public class Client implements Runnable{
     protected boolean queueStatus;
     protected boolean gameStatus;
     public boolean loginMessageReceived;
+    private Board board;
 
     //--Constructor
     public Client(ClientTUI clientTUI) {
         this.myClientTUI = clientTUI;
+        board = new Board();
     }
 
     //private Player player;
@@ -78,7 +81,7 @@ public class Client implements Runnable{
             try{
                 String line;
                 while ((line = this.inClient.readLine()) != null){
-                    System.out.println("Server: "+line);
+                    //System.out.println("Server: "+line);
                     String[] commandSplit = line.split("~");
                     switch (commandSplit[0]){
                         case "LOGIN":
@@ -108,7 +111,7 @@ public class Client implements Runnable{
                 }
 
             } catch (IOException e) {
-                //System.out.println("Catch from Client RUN");;
+                System.out.println("Catch from Client RUN");;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -159,26 +162,6 @@ public class Client implements Runnable{
 
     }
 
-//    /**
-//     * Method for proper handling of the return LOGIN from the server if name is unique.
-//     * @throws IOException
-//     */
-//    public void login() throws IOException{
-//        String[] commandSplit = this.inClient.readLine().split("~");
-//        switch(toUpperCase(commandSplit[0])){
-//            case "LOGIN":
-//                System.out.println("Succesfull login as " + playerName);
-//                this.loginSuccess = true;
-//
-//                break;
-//            case "ALREADYLOGGEDIN":
-//                System.out.println("Name already taken, please use a different name then " + this.playerName);
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-
     /**
      * Following QUIT command connection is terminated //TODO properly close TUI
      */
@@ -208,8 +191,11 @@ public class Client implements Runnable{
      * @param commandSplit
      */
     private void newGameStart(String[] commandSplit) {
-        System.out.println("Starting new game with player 1: " + commandSplit[1] + " and player 2: " + commandSplit[2]);
+        System.out.println("Starting new game with player 1: " + commandSplit[1] + " and player 2: " + commandSplit[2]+"\n");
         this.gameStatus = true; //get you out of the QUEUE loop
+
+        System.out.println("  Curent game situation: \n\n"+ board.toString() +"\n");
+
 }
 
         // todo board opstarten

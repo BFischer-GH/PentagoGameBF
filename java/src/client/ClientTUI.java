@@ -136,7 +136,7 @@ public class ClientTUI {
         String messageTUI = "";
         while (!messageTUI.equals("QUIT"))  {
             try {
-                System.out.println("\n" + "You can use the following commands (CLIENTTUI)\n" +
+                System.out.println("You can use the following commands (CLIENTTUI)\n" +
                         "LIST: " + "\t" + "This shows all connected players.\n" +
                         "QUEUE: " + "\t" + "Indicates if you want to play or not.\n" +
                         "QUIT: " + "\t" + "Disconnect from server. \n");

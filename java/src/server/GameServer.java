@@ -185,7 +185,7 @@ public class GameServer implements Runnable {
                 }
             }
         } catch ( ConcurrentModificationException ignored) {
-            System.out.println("ConcurrentMod ignored"); //TODO check for details
+            //System.out.println("ConcurrentMod ignored"); //TODO check for details
         }
     }
 
@@ -199,7 +199,7 @@ public class GameServer implements Runnable {
         String userName1 = client1.getPlayerName();
         String userName2 = client2.getPlayerName();
 
-        System.out.println("This message is an indicator that a match game can start");
+        System.out.println("Server: This message is an indicator that a match game can start\n ");
 
         String startNewGame = "NEWGAME~" + userName1 + "~" + userName2;
         client1.sendCommand(startNewGame);
