@@ -31,7 +31,6 @@ public class Client implements Runnable{
     protected boolean loginSuccess;
     protected boolean queueStatus;
     protected boolean gameStatus;
-    public boolean loginMessageReceived;
     private Board board;
 
     //--Constructor
@@ -45,7 +44,6 @@ public class Client implements Runnable{
     //-- Basic Methods
     public boolean connect(InetAddress address, int port){
         try{
-
             this.socket = new Socket(address, port);
             System.out.println("Making connection to server and starting new thread. (CLIENT)");
 
@@ -81,16 +79,13 @@ public class Client implements Runnable{
             try{
                 String line;
                 while ((line = this.inClient.readLine()) != null){
-                    //System.out.println("Server: "+line);
+                    System.out.println("Server: "+line);
                     String[] commandSplit = line.split("~");
                     switch (commandSplit[0]){
                         case "LOGIN":
-
                             System.out.println("Succesfull login as " + playerName);
                             this.loginSuccess = true;
                             myClientTUI.playerQueue();
-
-                            // doorgeven dat mainthread nu doorkan
                             break;
                         case "ALREADYLOGGEDIN":
                             System.out.println("Name already taken, please use a different name then " + this.playerName);
@@ -176,10 +171,9 @@ public class Client implements Runnable{
      */
     public void sendQueue() {
         this.queueStatus = !queueStatus;
-        System.out.println("Sending QUEUE command to server with status " + this.queueStatus);
         this.sendMessage("QUEUE");
         if(this.queueStatus){
-            System.out.println("Player in queue for newgame, waiting for second player\n" +
+            System.out.println("Player in queue for newgame, waiting for other queued player\n" +
                     "If you want to go out of queue enter: \t \"QUEUE\" \n");
             } else {
             System.out.println("Player not in queue for newgame.");
@@ -187,7 +181,7 @@ public class Client implements Runnable{
     }
 
     /**
-     *
+     * When a NEWGAME command is received
      * @param commandSplit
      */
     private void newGameStart(String[] commandSplit) {
@@ -198,14 +192,13 @@ public class Client implements Runnable{
 
 }
 
-        // todo board opstarten
-        // todo if playername = commandSplit[1] => you're player 1 otherwise player2
-        // todo player2 = commandSplit[2]
-        // todo move()
+        // todo setmove() uitwerken zodat de gevraagde zet naar het spel gaat.
 
-
+    /**
+     * When a valid move is received the board is updated
+     */
     public void setMove() {
-            System.out.println(" It's now your turn, please enter a move value");
+            System.out.println("Updating board");
             String messageMove = TextIO.getlnString();
             sendMessage("Move~"+messageMove);
             //this.playerTurn = !playerTurn; // Todo this happen when Move is received back from Server

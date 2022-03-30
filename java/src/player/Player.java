@@ -44,14 +44,14 @@ public abstract class Player {
      * @param board the current board
      * @return the move provided by the player
      */
-    public abstract int determineMove(Board board);
+    public abstract int determineMove(Board board, ClientHandler ch);
 
     /**
      * Makes the move on the board
      * @param board the current board
      */
     public void makeMove(Board board){
-        int choice = determineMove(board);
-                board.setField(choice,getMark());
+        //int choice = determineMove(board);
+         //       board.setField(choice,getMark());
     }
 }

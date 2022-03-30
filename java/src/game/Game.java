@@ -1,5 +1,6 @@
 package game;
 
+import player.HumanPlayer;
 import player.Player;
 import server.ClientHandler;
 
@@ -73,17 +74,18 @@ public class Game {
     private void play(){
         this.reset();
         int numberPlayer = 0;
-        System.out.println("Test line 1tr55r");
-        while (!board.gameOver()) {
-            System.out.println(update());
-            if (numberPlayer % 2 == 0) {
 
-                board.setField(players[0].determineMove(this.board),players[0].getMark());
-            } else {
-                board.setField(players[1].determineMove(this.board),players[1].getMark());
-            }
-            numberPlayer++;
-        }
+        players[0].determineMove(this.board, clients[0]);
+
+//                while (!board.gameOver()) {
+//            System.out.println(update());
+//            if (numberPlayer % 2 == 0) {
+//                board.setField(players[0].determineMove(this.board, clients[0]),players[0].getMark());
+//            } else {
+//                board.setField(players[1].determineMove(this.board, clients[1]),players[1].getMark());
+//            }
+//            numberPlayer++;
+//        }
         System.out.println(this.update()); //Game display in the server
 
         //clients[0].sendCommand(this.update()); //TODO niet het hele board doorsturen enkel de move

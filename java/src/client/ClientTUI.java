@@ -41,7 +41,7 @@ public class ClientTUI {
 //        playerQueue();
 
         // 2 queued players have matched and a new game has started;`
-//        startGame();
+        startGame();
     }
     /**
      * Asks for address and port to connect to server
@@ -78,41 +78,12 @@ public class ClientTUI {
         } while (!client.connect(address, port));
     }
 
-//    /**
-//     * After connection is made, player provides player name which is checked if it is unique on server.
-//     */
-//    private void playerLogin() {
-//        String playerName;
-//        do {
-//            // Get players name
-//            client.loginMessageReceived = false;
-//            try {
-//                System.out.println("Please enter your name:");
-//                playerName = getPlayerName();
-//                client.setPlayername(playerName);
-//                client.loginPlayer(playerName);
-//
-//                //System.out.println("LoginSuccesTUI: "+client.loginSuccess);
-//                //client.login();
-//
-//
-//            } catch (Exception e) {
-//                System.out.println("ERROR: invalid player name.");
-//                continue;
-//            }
-//            do{
-////                System.out.println("waiting for response server");
-//            }while(!client.loginMessageReceived);
-//            System.out.println("LoginSuccesTUI: " + client.loginSuccess);
-//        }while (!client.loginSuccess);
-//    }
-
     /**
      * After connection is made, player provides player name which is checked if it is unique on server.
      */
     public void playerLogin() {
         String playerName;
-            // Get players name
+            // Get player name
             try {
                 System.out.println("Please enter your name:");
                 playerName = getPlayerName();
@@ -132,9 +103,8 @@ public class ClientTUI {
      * @throws InterruptedException
      */
     public void playerQueue() throws InterruptedException {
-        System.out.println("in playerqueue of: " + this.playerName);
         String messageTUI = "";
-        while (!messageTUI.equals("QUIT"))  {
+        while (!messageTUI.equals("QUIT") || !client.gameStatus)  {
             try {
                 System.out.println("You can use the following commands (CLIENTTUI)\n" +
                         "LIST: " + "\t" + "This shows all connected players.\n" +
@@ -169,19 +139,20 @@ public class ClientTUI {
     /**
      * After new game is started, the first player becomes the active player and can send the first move.
      */
-//    private void startGame() {
-//        while (client.gameStatus){
-//            try {
-//                String messageMove = TextIO.getlnString();
-//
-//
-//
-//
-//            } catch (Exception e) {
-//                System.out.println("ERROR: GAME ACTIVE");
-//            }
-//        }
-//    }
+    private void startGame() {
+
+        while (client.gameStatus){
+            try {
+                String messageMove = TextIO.getlnString();
+
+
+
+
+            } catch (Exception e) {
+                System.out.println("ERROR: GAME ACTIVE");
+            }
+        }
+    }
 //----------------------------------------------------------------------------------------------------------------------
     //--Get/Set
 

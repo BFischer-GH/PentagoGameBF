@@ -12,39 +12,31 @@ import utils.TextIO;
 
 public class HumanPlayer extends Player{
 
-    private ClientHandler player;
+    private ClientHandler ch;
 
 //-- Constructor
-    public HumanPlayer(ClientHandler name, Mark mark) {
-        super(name, mark);
-        this.player = name;
-
+    public HumanPlayer(ClientHandler ch, Mark mark) {
+        super(ch, mark);
     }
 
     @Override
-    public int determineMove(Board board) {
+    public int determineMove(Board board, ClientHandler ch) {
         //ToDo ask the input from the Client
 
         String prompt = "Hello " + getPlayerName() + " (" + getMark().toString() + ")"
                 + ", what is your move? ";
+        int choiceInput;
+        do{
+            ch.sendCommand(prompt);
+            choiceInput = TextIO.getInt();
+            // If input is valid then here the loop will break otherwise line will be send
+            ch.sendCommand("Error: Invalid move please re-enter!");
+        } while(!board.isField(choiceInput)&&board.isEmptyField(choiceInput));
+        System.out.println(prompt);
 
-                //This message should be send to user
-        player.sendCommand(prompt);
-        //System.out.println(prompt);
 
-        //This should be the input from the user
-        int choice = TextIO.getInt();
-
-        boolean valid = board.isField(choice) && board.isEmptyField(choice);
-        while (!valid) {
-            System.out.println("ERROR: field " + choice
-                    + " is no valid choice.");
-            System.out.println(prompt);
-            choice = TextIO.getInt();
-            valid = board.isField(choice) && board.isEmptyField(choice);
-        }
         //Get the response back
-        return choice;
+        return choiceInput;
     }
 
 }

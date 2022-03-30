@@ -191,21 +191,21 @@ public class GameServer implements Runnable {
 
     /**
      * Initiates the NEWGAME from Server to 2 players who where both QUEUED for active game
-     * @param client1
-     * @param client2
+     * @param ch1
+     * @param ch2
      */
-    private void startNewGame(ClientHandler client1, ClientHandler client2) {
-        System.out.println("Game will start with player 1:"+ client1.getPlayerName() +" and player 2: "+ client2.getPlayerName());
-        String userName1 = client1.getPlayerName();
-        String userName2 = client2.getPlayerName();
+    private void startNewGame(ClientHandler ch1, ClientHandler ch2) {
+        System.out.println("Game will start with player 1: "+ ch1.getPlayerName() +" and player 2: "+ ch2.getPlayerName());
+        String userName1 = ch1.getPlayerName();
+        String userName2 = ch2.getPlayerName();
 
         System.out.println("Server: This message is an indicator that a match game can start\n ");
 
         String startNewGame = "NEWGAME~" + userName1 + "~" + userName2;
-        client1.sendCommand(startNewGame);
-        client2.sendCommand(startNewGame);
+        ch1.sendCommand(startNewGame);
+        ch2.sendCommand(startNewGame);
 
-        GameHandler game = new GameHandler(client1, client2);
+        GameHandler game = new GameHandler(ch1, ch2);
 
 
     }
