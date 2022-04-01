@@ -3,48 +3,68 @@ package server;
 /**
  * This clienthandler for 1  client on a new thread (thread is started by server)
  *
- * //TODO will contain the switch
- *
  * @author bart.fischer
  */
 
-import client.Client;
+import game.Mark;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.sun.tools.javac.util.StringUtils.toUpperCase;
 
-public class ClientHandler implements Runnable{
+public class ClientHandler implements Runnable {
     private final BufferedReader chIn;
     private final PrintWriter chOut;
     private final Socket socket;
     private String playerName;
     private boolean queueStatus;
     private GameServer server;
+    private GameHandler gameHandler;
+    private Mark mark;
 
-//-- Constructors
-    public ClientHandler (Socket socket, GameServer server) throws IOException {
+    //-- Constructors
+    public ClientHandler(Socket socket, GameServer server) throws IOException {
         this.socket = socket;
         this.server = server;
         this.chIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.chOut = new PrintWriter(socket.getOutputStream(), true);
     }
 
-//-- Run (containing the Switch)
+    //-- Getter/Setters
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public boolean getQueue() {
+        return queueStatus;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public void setGameHandler(GameHandler gameHandler) {
+        this.gameHandler = gameHandler;
+    }
+
+    public void setMark(Mark mark) {
+        this.mark = mark;
+    }
+
+    //-- Run (containing the Switch)
     @Override
     public void run() {
         boolean run = true;
-        while(run){
-            try{
+        while (run) {
+            try {
                 String message;
                 while ((message = chIn.readLine()) != null) {
-                    System.out.println("Client: "+message);
+                    //System.out.println("Client: " + message);
                     String[] messageSplit = message.split("~");
                     switch (toUpperCase(messageSplit[0])) {
                         case "LOGIN":
@@ -57,17 +77,14 @@ public class ClientHandler implements Runnable{
                             updateQueue();
                             break;
                         case "MOVE":
-                            //todo respond to move input
-                            //getMove();
+                            moveCH(messageSplit);
                             break;
                         case "QUIT":
-                            this.chOut.println(this.playerName+ " is quiting from server");
+                            this.chOut.println(this.playerName + " is quiting from server");
                             this.close();
                             run = false;
                             break;
                         default:
-                            //System.out.println("Default message");
-                            // todo: Add correct remark
                             break;
 
                     }
@@ -76,33 +93,38 @@ public class ClientHandler implements Runnable{
 
             } catch (IOException e) {
                 System.out.println("Error at CH ");
-                run = false;
-            }
+           }
 
         }
-     }
-
-    //-- Getter/Setters
-public String getPlayerName(){ return playerName; }
-
-public boolean getQueue(){return queueStatus;}
-
-public void setPlayerName(String playerName) { this.playerName = playerName; }
+    }
 
 
 //-- Methods
 
+    /**
+     * Check move input and set it on gameHandler
+     *
+     * @param messageSplit
+     */
+    private void moveCH(String[] messageSplit) {
+        if (this.gameHandler.checkMove(messageSplit[1])) {
+            this.gameHandler.doMove(messageSplit[1], this.mark);
+        } else sendCommand("ERROR");
+        return;
+    }
 
     /**
-     *  Method to send message to client
+     * Method to send message to client
+     *
      * @param command the message to be send
      */
     public void sendCommand(String command) {
-      this.chOut.println(command);
-           }
+        this.chOut.println(command);
+    }
 
     /**
      * Close the connection by closing the socket from this ClientHandler
+     *
      * @throws IOException
      */
     public void close() throws IOException {
@@ -112,10 +134,11 @@ public void setPlayerName(String playerName) { this.playerName = playerName; }
 
     /**
      * Following LIST request from CLIENT returns a string with connected player names
+     *
      * @return String to CLIENT containing all names of player currently connected.
      */
-    public void sendList(){
-        ArrayList<ClientHandler>  list = server.getList();
+    public void sendList() {
+        List<ClientHandler> list = server.getList();
         String command = "LIST";
         for (ClientHandler ch : list) {
             command += "~" + ch.getPlayerName();
@@ -125,38 +148,38 @@ public void setPlayerName(String playerName) { this.playerName = playerName; }
 
     /**
      * Checker if provided player name is already present in server
+     *
      * @param playerName given bij player
      * @return True is player is already present in
      */
-    public boolean checkName(String playerName){
-        List<String> List = server.clientNames;
-        for(String s: List){
-            if(s.equals(playerName)){
+    public boolean checkName(String playerName) {
+        List<ClientHandler> list = server.getList();
+        for (ClientHandler ch : list) {
+            if (ch.getPlayerName().equals(playerName))
                 return true;
-                }
-        }return false;
+        }
+        return false;
     }
 
     /**
      * Creates and checks if player Login is ok
+     *
      * @param playerName input from CLIENT
      */
 
     private void playerLogin(String playerName) {
         setPlayerName(playerName);
         try {
-            if (server.clientNames.isEmpty()){
+            if (server.clients.isEmpty()) {
                 System.out.println("First player joined");
                 sendCommand("LOGIN");
-                server.clientNames.add(this.playerName);
                 server.addClient(this);
-            } else if(checkName(playerName)){
+            } else if (checkName(playerName)) {
                 //setPlayerName("default");
                 sendCommand("ALREADYLOGGEDIN");
                 //server.addClient(this);
                 System.out.println("Name already in server");
-            } else{
-                server.clientNames.add(this.playerName);
+            } else {
                 server.addClient(this);
                 System.out.println("Additional player joined");
                 sendCommand("LOGIN");
@@ -170,15 +193,17 @@ public void setPlayerName(String playerName) { this.playerName = playerName; }
      * Switches the queue status following TUI input
      */
     public void updateQueue() throws IOException {
-        this.queueStatus = !queueStatus;
-        server.checkQueues(this);}
-
+        flipQueueState();
+        server.checkQueues(this);
+    }
 
     /**
-     * Send a move request for player input for move;
+     * Changes the QUEUE state
+     * Required for updateQueue() and when starting new game
      */
-    public void askMove() {
-        sendCommand("MOVE");
+    public void flipQueueState() {
+        this.queueStatus = !queueStatus;
     }
+
 }
 

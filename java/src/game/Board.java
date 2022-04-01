@@ -50,14 +50,6 @@ public class Board {
     }
 
     /**
-     * Returns true of the (row,col) pair refers to a valid field on the board.
-     * @return true if 0 <= row < DIM && 0 <= col < DIM
-     */
-    public boolean isField(int row, int col) {
-        return (row >= 0 && row < DIM && col >= 0 && col < DIM);
-    }
-
-    /**
      * Returns the content of the field i.
      *
      * @param i the number of the field (see NUMBERING)
@@ -88,15 +80,7 @@ public class Board {
         return getField(i) == Mark.EMPTY;
     }
 
-    /**
-     * Returns true if the field referred to by the (row,col) pair it empty.
-     * @param row the row of the field
-     * @param col the column of the field
-     * @return true if the field is empty
-     */
-    public boolean isEmptyField(int row, int col) {
-        return getField(row, col) == Mark.EMPTY;
-    }
+
 
     /**
      * Sets the content of field i to the mark m.
@@ -105,18 +89,6 @@ public class Board {
      * @param m the mark to be placed
      */
     public void setField(int i, Mark m) {
-        fields[i] = m;
-    }
-
-    /**
-     * Sets the content of the field represented by the (row,col) pair to the
-     * mark m.
-     * @param row the field's row
-     * @param col the field's column
-     * @param m the mark to be placed
-     */
-    public void setField(int row, int col, Mark m) {
-        int i = index(row,col);
         fields[i] = m;
     }
 
