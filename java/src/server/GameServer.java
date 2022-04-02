@@ -45,14 +45,13 @@ public class GameServer implements Runnable {
             System.out.println("Welcome, so you want to start a Pentago Server?");
             System.out.println("Give some details to get it all started:\n");
 
-
             try {
                 // Get Address input
                 System.out.println("Please enter server address (Type \"localhost\" when playing on this device):\n");
-                String addressInput = TextIO.getlnString();
-                address = InetAddress.getByName(addressInput);
-                //address = InetAddress.getByName("localhost");
-                //System.out.println("\t Localhost selected for now");
+                //String addressInput = TextIO.getlnString();
+                //address = InetAddress.getByName(addressInput);
+                address = InetAddress.getByName("localhost");
+                System.out.println("\t Localhost selected for now");
             } catch (UnknownHostException e) {
                 System.out.println("This is not a valid address");
                 continue;
@@ -61,10 +60,10 @@ public class GameServer implements Runnable {
             // Get Port input
             try {
                 System.out.println("Please enter a valid port number ");
-                int portInput = TextIO.getlnInt();
-                port = portInput;
-                //port = 8080;
-                //System.out.println("\t For now port is set to " + port);
+//                int portInput = TextIO.getlnInt();
+//                port = portInput;
+                port = 8080;
+                System.out.println("\t For now port is set to " + port);
             } catch (Exception e) {
                 System.out.println("This is an invalid port number");
                 continue;

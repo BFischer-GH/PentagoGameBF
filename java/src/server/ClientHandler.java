@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
     private GameServer server;
     private GameHandler gameHandler;
     private Mark mark;
+    boolean run = true;
 
     //-- Constructors
     public ClientHandler(Socket socket, GameServer server) throws IOException {
@@ -59,7 +60,6 @@ public class ClientHandler implements Runnable {
     //-- Run (containing the Switch)
     @Override
     public void run() {
-        boolean run = true;
         while (run) {
             try {
                 String message;
@@ -82,18 +82,14 @@ public class ClientHandler implements Runnable {
                         case "QUIT":
                             this.chOut.println(this.playerName + " is quiting from server");
                             this.close();
-                            run = false;
                             break;
                         default:
                             break;
-
                     }
                 }
-
-
             } catch (IOException e) {
-                System.out.println("Error at CH ");
-           }
+                System.out.println("Error at CH: " + e.getMessage());
+            }
 
         }
     }
@@ -128,6 +124,7 @@ public class ClientHandler implements Runnable {
      * @throws IOException
      */
     public void close() throws IOException {
+        this.run = false;
         server.removeClient(this);
         socket.close();
     }

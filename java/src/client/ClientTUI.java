@@ -51,10 +51,10 @@ public class ClientTUI {
             try {
                 // Get Address input //TODO check input
                 System.out.println("Give server address (Type \"localhost\" when playing on this device):\n");
-                String addressInput = TextIO.getlnString();
-                address = InetAddress.getByName(addressInput);
-                //address = InetAddress.getByName("localhost");
-                //System.out.println("\t " + address + " localhost for now selected\n");
+//                String addressInput = TextIO.getlnString();
+//                address = InetAddress.getByName(addressInput);
+                address = InetAddress.getByName("localhost");
+                System.out.println("\t " + address + " localhost for now selected\n");
             } catch (UnknownHostException e) {
                 System.out.println("This is not a valid address\n");
             }
@@ -62,12 +62,12 @@ public class ClientTUI {
             // Get Port input //TODO check input
             try {
                 System.out.println("Please enter a valid port number \n");
-                int portInput = TextIO.getlnInt();
-                if(correctPort(portInput)){
-                   port = portInput;
-                }
-                //port = 8080;
-                //System.out.println("\t Port is set at " + port);
+//                int portInput = TextIO.getlnInt();
+//                if(correctPort(portInput)){
+//                   port = portInput;
+//                }
+                port = 8080;
+                System.out.println("\t Port is set at " + port);
             } catch (Exception e) {
                 System.out.println("This is an invalid port number\n");
                 continue;

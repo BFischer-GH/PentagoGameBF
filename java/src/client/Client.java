@@ -212,9 +212,12 @@ public class Client implements Runnable {
      */
     public void sendQuit() {
         try {
+
             System.out.println("Ending connection and game");
             this.sendMessage("QUIT~" + playerName);
             this.close();
+            activeClient = false;
+            myClientTUI.tuiThread.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
