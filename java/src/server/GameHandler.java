@@ -3,7 +3,6 @@ package server;
 /**
  * GameHandler is started when 2 players with queue active are matched
  * Communication goes through the ClientHandlers
- *
  */
 
 import game.Board;
@@ -15,13 +14,13 @@ public class GameHandler {
     private Board board;
 
     public GameHandler(ClientHandler ch1, ClientHandler ch2) {
-    //-- Constructor
+        //-- Constructor
         ch1.setGameHandler(this);
         ch2.setGameHandler(this);
         this.board = new Board();
 
         System.out.println(" Current game situation: \n");
-        System.out.println(board+"\n");
+        System.out.println(board + "\n");
 
         players = new ClientHandler[2];
         this.players[0] = ch1;
@@ -35,12 +34,14 @@ public class GameHandler {
      * Checks if provided move is valid
      * TODO update for new input 6x6 grid
      *
-     * @param input move provided by player
+     * @param moveInput move provided by player
+     * @param quadInput rotation proved by player
      * @return true if valid move
      */
-    public boolean checkMove(String input) {
-        int move = Integer.parseInt(input);
-        return board.isField(move) && board.isEmptyField(move);
+    public boolean checkMove(String moveInput, String quadInput) {
+        int move = Integer.parseInt(moveInput);
+        int quad = Integer.parseInt(quadInput);
+        return board.isField(move) && board.isEmptyField(move) && (quad >= 0 && quad < 8);
     }
 
     /**
@@ -50,41 +51,40 @@ public class GameHandler {
      * @param input
      * @param mark
      */
-    public void doMove(String input, Mark mark) {
+    public void doMove(String input, String quadInput, Mark mark) {
         int move = Integer.parseInt(input);
-
         board.setField(move, mark);
+        int quad = Integer.parseInt(quadInput);
+        board.setQuad(quad);
+        String moveCommand = "MOVE~" + move + "~" + quad;
         System.out.println(" Current game situation: \n\n" + board.toString() + "\n");
 
         if (this.board.gameOver()) {
-           // This will be the final move
-
-
             if (this.board.isFull()) {
                 this.players[0].sendCommand("GAMEOVER~DRAW");
                 this.players[1].sendCommand("GAMEOVER~DRAW");
                 //Send last move
-                this.players[0].sendCommand("MOVE~" + move);
-                this.players[1].sendCommand("MOVE~" + move);
+                this.players[0].sendCommand(moveCommand);
+                this.players[1].sendCommand(moveCommand);
             } else if (this.board.hasWinner()) {
                 if (board.isWinner(game.Mark.XX)) {
                     this.players[0].sendCommand("GAMEOVER~VICTORY~" + players[0].getPlayerName());
                     this.players[1].sendCommand("GAMEOVER~VICTORY~" + players[0].getPlayerName());
                     //Send last move
-                    this.players[0].sendCommand("MOVE~" + move);
-                    this.players[1].sendCommand("MOVE~" + move);
+                    this.players[0].sendCommand(moveCommand);
+                    this.players[1].sendCommand(moveCommand);
                 } else {
                     this.players[0].sendCommand("GAMEOVER~VICTORY~" + players[1].getPlayerName());
                     this.players[1].sendCommand("GAMEOVER~VICTORY~" + players[1].getPlayerName());
                     // Send last move
-                    this.players[0].sendCommand("MOVE~" + move);
-                    this.players[1].sendCommand("MOVE~" + move);
+                    this.players[0].sendCommand("MOVE~" + move + "~" + quad);
+                    this.players[1].sendCommand("MOVE~" + move + "~" + quad);
                 }
             }
         } else {
             //Update move
-            this.players[0].sendCommand("MOVE~" + move);
-            this.players[1].sendCommand("MOVE~" + move);
+            this.players[0].sendCommand(moveCommand);
+            this.players[1].sendCommand(moveCommand);
         }
 
     }

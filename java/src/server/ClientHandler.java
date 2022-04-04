@@ -26,7 +26,7 @@ public class ClientHandler implements Runnable {
     private GameServer server;
     private GameHandler gameHandler;
     private Mark mark;
-    boolean run = true;
+    boolean activeCH = true;
 
     //-- Constructors
     public ClientHandler(Socket socket, GameServer server) throws IOException {
@@ -60,11 +60,11 @@ public class ClientHandler implements Runnable {
     //-- Run (containing the Switch)
     @Override
     public void run() {
-        while (run) {
+        while (activeCH) {
             try {
                 String message;
                 while ((message = chIn.readLine()) != null) {
-                    //System.out.println("Client: " + message);
+                    System.out.println("Client: " + message);
                     String[] messageSplit = message.split("~");
                     switch (toUpperCase(messageSplit[0])) {
                         case "LOGIN":
@@ -99,14 +99,13 @@ public class ClientHandler implements Runnable {
 
     /**
      * Check move input and set it on gameHandler
-     *
+     * //TODO update to handle both inputs
      * @param messageSplit
      */
     private void moveCH(String[] messageSplit) {
-        if (this.gameHandler.checkMove(messageSplit[1])) {
-            this.gameHandler.doMove(messageSplit[1], this.mark);
+        if (this.gameHandler.checkMove(messageSplit[1], messageSplit[2])) {
+            this.gameHandler.doMove(messageSplit[1], messageSplit[2], this.mark);
         } else sendCommand("ERROR");
-        return;
     }
 
     /**
@@ -124,7 +123,7 @@ public class ClientHandler implements Runnable {
      * @throws IOException
      */
     public void close() throws IOException {
-        this.run = false;
+        this.activeCH = false;
         server.removeClient(this);
         socket.close();
     }

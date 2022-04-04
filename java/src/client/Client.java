@@ -38,7 +38,7 @@ public class Client implements Runnable {
         board = new Board();
     }
 
-     //-- Basic Methods
+    //-- Basic Methods
     public boolean connect(InetAddress address, int port) {
         try {
             this.socket = new Socket(address, port);
@@ -50,7 +50,7 @@ public class Client implements Runnable {
             this.threadClient.start();
             return true;
         } catch (IOException e) {
-            System.out.println("Error: Connection problem from Client side\n");
+            System.out.println("Thread connect: " + e.getMessage());
             return false;
         }
     }
@@ -63,8 +63,7 @@ public class Client implements Runnable {
             this.myClientTUI.tuiThread.join();
             System.out.println("This socket is closed\n");
         } catch (IOException | InterruptedException e) {
-            System.out.println("Error: A problem occurred with closing the socket.\n");
-
+            System.out.println("Thread Close: " + e.getMessage());
         }
     }
 
@@ -75,8 +74,8 @@ public class Client implements Runnable {
     public void run() {
         try {
             String line;
-            while ( this.activeClient && null != (line = this.inClient.readLine()) ) {
-                //System.out.println("Server: " + line);
+            while (this.activeClient && null != (line = this.inClient.readLine())) {
+                System.out.println("Server: " + line);
                 String[] commandSplit = line.split("~");
                 switch (commandSplit[0]) {
                     case "LOGIN":
@@ -93,6 +92,7 @@ public class Client implements Runnable {
                         newGameStart(commandSplit);
                         break;
                     case "ERROR":
+                        System.out.println("That move wasn't valid!\n");
                         myClientTUI.askMove();
                         break;
                     case "MOVE":
@@ -106,9 +106,9 @@ public class Client implements Runnable {
                 }
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Client Inter Switch:" + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Client IOEx Switch:" + e.getMessage());
         }
     }
 
@@ -136,14 +136,19 @@ public class Client implements Runnable {
 
     /**
      * handles move from server on the board that the player sees
+     * Keeps track of who's turn it is.
+     *
      * @param commandSplit
      */
     private void setMove(String[] commandSplit) {
         int move = Integer.parseInt(commandSplit[1]);
+        int quad = Integer.parseInt(commandSplit[2]);
         if (this.playerTurn) {
             this.board.setField(move, this.mark);
+            board.setQuad(quad);
         } else {
             this.board.setField(move, this.mark.other());
+            board.setQuad(quad);
         }
         playerTurn = !playerTurn;
 
@@ -155,6 +160,7 @@ public class Client implements Runnable {
 
     /**
      * Sets player name which is send to Server,
+     *
      * @param playerName
      */
     public void setPlayerName(String playerName) {
@@ -167,8 +173,15 @@ public class Client implements Runnable {
 
     public void getList() throws InterruptedException {
         this.sendMessage("LIST~" + this.playerName);
-        System.out.println("Requesting List of waiting players from server\n")  ;
+        System.out.println("Requesting List of waiting players from server\n");
         myClientTUI.playerQueue();
+    }
+
+    /**
+     * Returns Client specific mark
+     */
+    public Mark getMark() {
+        return this.mark;
     }
 
     /**
@@ -181,7 +194,7 @@ public class Client implements Runnable {
             this.outClient.println(message);
             //System.out.println("Client: " + message);
         } catch (Exception e) {
-            System.out.println("SendMessage CATCH:" +e.getMessage());
+            System.out.println("SendMessage CATCH:" + e.getMessage());
         }
     }
 
@@ -230,7 +243,7 @@ public class Client implements Runnable {
         this.queueStatus = !queueStatus;
         this.sendMessage("QUEUE");
         if (this.queueStatus) {
-            System.out.println("Player: "+ playerName + " in queue for Newgame, waiting for other queued player\n");
+            System.out.println("Player: " + playerName + " in queue for Newgame, waiting for other queued player\n");
             this.gameStatus = true;
             this.myClientTUI.playerQueue();
 
@@ -256,12 +269,12 @@ public class Client implements Runnable {
 
         if (commandSplit[1].equals(this.playerName)) {
             this.mark = Mark.XX;
-            System.out.println("You are player 1: " + commandSplit[1] +" (" +this.mark+ ") "+" it is your turn.");
+            System.out.println("You are player 1: " + commandSplit[1] + " (" + this.mark + ") " );
             this.playerTurn = true;
             myClientTUI.askMove();
         } else {
             this.mark = Mark.OO;
-            System.out.println("You are player 2: " + this.playerName + " (" +this.mark+ ")  please wait for move from other player");
+            System.out.println("You are player 2: " + this.playerName + " (" + this.mark + ")  please wait for move from other player");
             this.playerTurn = false;
         }
 

@@ -114,7 +114,7 @@ public class ClientTUI {
                         client.sendQuit();
                         break;
                     default:
-                       break;
+                        break;
                 }
             }
         } catch (Exception ex) {
@@ -178,12 +178,19 @@ public class ClientTUI {
      * Uses getGameStatus to prevent last move request
      */
     public void askMove() {
-        if (getGameStatus()){
-        System.out.println("Please enter valid move\n");
-        String command = "MOVE~";
-        int input = TextIO.getlnInt();
-        command += input;
-        client.sendMessage(command);
+        if (getGameStatus()) {
+            System.out.println(this.playerName+ " ("+ client.getMark() + "), it's your turn.");
+            String command = "MOVE~";
+            //First ask where you want to place the marble
+            System.out.println("Where do you want to place your mark?\n");
+            int marbleInput = TextIO.getlnInt();
+            command += marbleInput;
+            //Second ask for quadrant manipulation
+            System.out.println("Enter quadrant movement value:");
+            int quadinput = TextIO.getlnInt();
+            command = command +"~"+quadinput;
+
+            client.sendMessage(command);
         }
 
     }
