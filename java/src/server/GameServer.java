@@ -7,6 +7,7 @@ package server;
  */
 
 //-- Imports
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,7 +15,6 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-
 import game.Mark;
 import utils.TextIO;
 
@@ -48,10 +48,10 @@ public class GameServer implements Runnable {
             try {
                 // Get Address input
                 System.out.println("Please enter server address (Type \"localhost\" when playing on this device):\n");
-                //String addressInput = TextIO.getlnString();
-                //address = InetAddress.getByName(addressInput);
-                address = InetAddress.getByName("localhost");
-                System.out.println("\t Localhost selected for now");
+                String addressInput = TextIO.getlnString();
+                address = InetAddress.getByName(addressInput);
+                //address = InetAddress.getByName("localhost");
+                //System.out.println("\t Localhost selected for now");
             } catch (UnknownHostException e) {
                 System.out.println("This is not a valid address");
                 continue;
@@ -60,10 +60,10 @@ public class GameServer implements Runnable {
             // Get Port input
             try {
                 System.out.println("Please enter a valid port number ");
-//                int portInput = TextIO.getlnInt();
-//                port = portInput;
-                port = 8080;
-                System.out.println("\t For now port is set to " + port);
+                int portInput = TextIO.getlnInt();
+                port = portInput;
+//                port = 8080;
+//                System.out.println("\t For now port is set to " + port);
             } catch (Exception e) {
                 System.out.println("This is an invalid port number");
                 continue;
@@ -89,7 +89,7 @@ public class GameServer implements Runnable {
     public void start() {
         try {
             this.serverSocket = new ServerSocket(port);
-            System.out.println("New server started at port: " + this.serverSocket.getLocalPort()+"\n");
+            System.out.println("New server started at port: " + this.serverSocket.getLocalPort() + "\n");
             //Start this server on a new thread
             this.thread = new Thread(this);
             this.thread.start();
@@ -175,23 +175,13 @@ public class GameServer implements Runnable {
      * @param client1
      */
     public void checkQueues(ClientHandler client1) {
-        try {
-            for (ClientHandler client2 : clients) { //Run through all clients
-                ClientHandler ch1 = null;
-                ClientHandler ch2 = null;
-                if (!client2.getPlayerName().equals(client1.getPlayerName()) && client2.getQueue() && client1.getQueue()) {
-                    startNewGame(client1, client2);
-                    ch1 = client1;
-                    ch2 = client2;
-                }
-                //To make sure that if players can't be matched while playing
-                if (ch2 != null) {
-                    ch1.flipQueueState();
-                    ch2.flipQueueState();
-                }
+        for (ClientHandler client2 : clients) { //Run through all clients
+            if (!client2.getPlayerName().equals(client1.getPlayerName()) && client2.getQueue() && client1.getQueue()) {
+                startNewGame(client1, client2);
+                //To make sure players cannot be found whilst playing a game
+                client1.flipQueueState();
+                client2.flipQueueState();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -211,9 +201,9 @@ public class GameServer implements Runnable {
 
         ch1.setMark(Mark.XX);
         ch2.setMark(Mark.OO);
-        System.out.println( "Game will start with player 1: " +
-                            ch1.getPlayerName() + " (" + Mark.XX +  ") " +
-                            " and player 2: " + ch2.getPlayerName() + " (" + Mark.OO +  ") \n" ) ;
+        System.out.println("Game will start with player 1: " +
+                ch1.getPlayerName() + " (" + Mark.XX + ") " +
+                " and player 2: " + ch2.getPlayerName() + " (" + Mark.OO + ") \n");
 
         new GameHandler(ch1, ch2);
     }

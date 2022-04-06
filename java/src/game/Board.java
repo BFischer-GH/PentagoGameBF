@@ -2,7 +2,6 @@ package game;
 
 /**
  * Create basic board (DIMxDIM = 3x3) for the Pentago game
- * //TODO the 4 quadrants and rotation will be added later
  *
  * @author bart.fischer
  */
@@ -106,35 +105,44 @@ public class Board {
         fields[index] = m;
     }
 
-    /** //TODO verde uitwerken van toepassing in spel
+    /**
+     *
      * @param quad
      */
-    public String setQuad(int quad) {
-        if (quad % 2 == 0) {
-            return "A quadrant should go COUNTER clockwise";
-        } else return ("A quadrant should go clockwise");
+    public void setQuad(int quad) {
+        switch (quad) {
+            case 0 -> quadCOUNTERClockWise(0, 0);   // Top Left board CCW
+            case 1 -> quadClockWise(0, 0);          // Top Left board CW
+            case 2 -> quadCOUNTERClockWise(0, 3);   // Top Right board CCW
+            case 3 -> quadClockWise(0, 3);          // Top Right board CW
+            case 4 -> quadCOUNTERClockWise(3, 0);   // Lower Left board CCW
+            case 5 -> quadClockWise(3, 0);          // Lower Left board CW
+            case 6 -> quadCOUNTERClockWise(3, 3);   // Lower Right board CCW
+            case 7 -> quadClockWise(3, 3);          // Lower Right board CW
+        }
     }
 
     /**
      * Rotate a quadrant clockwise, quadrant is selected on row/column section
-     * @param rowSection Needs to be 0 or 3 for upper or lower section
+     *
+     * @param rowSection    Needs to be 0 or 3 for upper or lower section
      * @param columnSection Needs to be 0 or 3 for left or right section
-     *                      //TODO this works but can probably be much easier/simpler...
+     *
      */
     public void quadClockWise(int rowSection, int columnSection) {
         Board quartBoard = new Board(); // Selected quadrant is moved to upper left corner of this placeholder
         Board transBoard = new Board(); // Board to transpose matrix
         Board columSwitchBoard = new Board(); //Column switch to get clockwise rotated quadrant
 
-        int rowStart=rowSection;
-        int rowEnd= rowStart+3;
-        int colStart =columnSection;
-        int colEnd =colStart+3;
+        int rowStart = rowSection;
+        int rowEnd = rowStart + 3;
+        int colStart = columnSection;
+        int colEnd = colStart + 3;
 
         // Set selected quadrant in upperleft corner of an empty board
-        for (int row = rowStart; row < rowEnd ; row++) {
+        for (int row = rowStart; row < rowEnd; row++) {
             for (int col = colStart; col < colEnd; col++) {
-                quartBoard.setField(row-rowStart,col-colStart,getField(row,col));
+                quartBoard.setField(row - rowStart, col - colStart, getField(row, col));
             }
         }
         // Transpose Quadrant
@@ -145,38 +153,38 @@ public class Board {
         }
         //Swap Columns
         for (int rows = 0; rows < 3; rows++) {
-            for (int columns =0; columns < 3; columns++) {
+            for (int columns = 0; columns < 3; columns++) {
                 columSwitchBoard.setField(rows, 3 - columns - 1, transBoard.getField(rows, columns));
             }
         }
         //Set back in board
-        for (int row = rowStart; row < rowEnd ; row++) {
+        for (int row = rowStart; row < rowEnd; row++) {
             for (int col = colStart; col < colEnd; col++) {
-                fields[index(row,col)] =columSwitchBoard.getField(index(row-rowStart,col-colStart));
+                fields[index(row, col)] = columSwitchBoard.getField(index(row - rowStart, col - colStart));
             }
         }
     }
 
     /**
      * Rotate a quadrant COUNTERclockwise, quadrant is selected on row/column section
-     * @param rowSection Needs to be 0 or 3 for upper or lower section
-     * @param columnSection Needs to be 0 or 3 for left or right section
      *
+     * @param rowSection    Needs to be 0 or 3 for upper or lower section
+     * @param columnSection Needs to be 0 or 3 for left or right section
      */
     public void quadCOUNTERClockWise(int rowSection, int columnSection) {
         Board quartBoard = new Board(); // Selected quadrant is moved to upper left corner of this placeholder
         Board transBoard = new Board(); // Board to transpose matrix
         Board columSwitchBoard = new Board(); //Column switch to get clockwise rotated quadrant
 
-        int rowStart=rowSection;
-        int rowEnd= rowStart+3;
-        int colStart =columnSection;
-        int colEnd =colStart+3;
+        int rowStart = rowSection;
+        int rowEnd = rowStart + 3;
+        int colStart = columnSection;
+        int colEnd = colStart + 3;
 
         // Set selected quadrant in upperleft corner of an empty board
-        for (int row = rowStart; row < rowEnd ; row++) {
+        for (int row = rowStart; row < rowEnd; row++) {
             for (int col = colStart; col < colEnd; col++) {
-                quartBoard.setField(row-rowStart,col-colStart,getField(row,col));
+                quartBoard.setField(row - rowStart, col - colStart, getField(row, col));
             }
         }
         // Transpose Quadrant
@@ -188,27 +196,16 @@ public class Board {
 
         //Swap Columns
         for (int rows = 0; rows < 3; rows++) {
-            for (int columns =0; columns < 3; columns++) {
+            for (int columns = 0; columns < 3; columns++) {
                 columSwitchBoard.setField(rows, 3 - columns - 1, transBoard.getField(rows, columns));
             }
         }
         //Set back in board
-        for (int row = rowStart; row < rowEnd ; row++) {
+        for (int row = rowStart; row < rowEnd; row++) {
             for (int col = colStart; col < colEnd; col++) {
-                fields[index(row,col)] =columSwitchBoard.getField(index(row-rowStart,col-colStart));
+                fields[index(row, col)] = columSwitchBoard.getField(index(row - rowStart, col - colStart));
             }
         }
-    }
-
-    /**
-     * Creates a deepCopy of the board (for randomAI)
-     *
-     * @return
-     */
-    public Board deepCopy() {
-        Board copyBoard = new Board(); //Create the copy variable which is a new Board
-        copyBoard.fields = this.fields.clone(); // Clone all fields to the fields of the copyBoard
-        return copyBoard; //return the clone if deepCopy is called
     }
 
     /**
@@ -266,6 +263,14 @@ public class Board {
     }
 
     /**
+     * Returns true if both players have a win (5 in a row)
+     * @return true if both players have a win
+     */
+    public boolean hasDrawMove(){
+        return (isWinner(Mark.OO) == isWinner(Mark.XX));
+    }
+
+    /**
      * Returns true if the game has a winner. This is the case when one of the
      * marks controls at least one row, column or diagonal.
      *
@@ -278,12 +283,14 @@ public class Board {
     /**
      * Checks if the mark m has won. A mark wins if it controls at
      * least one row, column or diagonal.
+     * Two parameters have been added, hasDiagonalAbove and hasDiagonalBelow
+     * These 2 check is there's a diagonal of 5 above or below the central diagonal line of the Matrix
      *
      * @param m the mark of interest
      * @return true if the mark has won
      */
     public boolean isWinner(Mark m) {
-        return hasRow(m) || hasColumn(m) || hasDiagonal(m);
+        return hasRow(m) || hasColumn(m) || hasDiagonal(m) || hasDiagonalAbove(m)|| hasDiagonalBelow(m);
     }
 
     /**
@@ -291,7 +298,7 @@ public class Board {
      * Has been fixed that it has to be 5 in a ROW consecutive!
      *
      * @param m the Mark of interest
-     * @return true if there is a row controlled by m
+     * @return true if there is a row controlled by 5x m consecutively
      */
     public boolean hasRow(Mark m) {
         for (int row = 0; row < DIM; row++) {
@@ -313,7 +320,7 @@ public class Board {
      * m.
      *
      * @param m the Mark of interest
-     * @return true if there is a column controlled by m
+     * @return true if there is a column controlled by 5x m
      */
     public boolean hasColumn(Mark m) {
         for (int c = 0; c < DIM; c++) {
@@ -330,35 +337,82 @@ public class Board {
         return false;
     }
 
-
     /**
-     * Checks whether there is a diagonal which is full and only contains the
-     * mark m.
+     * Checks whether there is a 5 in a row which is full and only contains the
+     * mark m. This is done in the central diagonal
      *
      * @param m the Mark of interest
-     * @return true if there is a diagonal controlled by m
+     * @return true if there is a 5 in a row controlled by m
      */
     public boolean hasDiagonal(Mark m) {
-        int sumDiagonalLeft = 0;
+        int sumDiagonalLeftCenter = 0;
         int sumDiagonalRight = 0;
 
         for (int r = 0; r < DIM; r++) {
             for (int c = 0; c < DIM; c++) {
+                //Check if r==c has 5 matches
+                // Going from Up to Down
                 if (r == c && getField(r, c) == m) {
-                    sumDiagonalLeft++;
-                } else if (r == c && getField(r, c) != m) {
-                    sumDiagonalLeft = 0;
+                    sumDiagonalLeftCenter++;
+                } else if ((r == c && getField(r, c) != m) && sumDiagonalLeftCenter < 4) {
+                    sumDiagonalLeftCenter = 0;
                 }
-
+                //Going from Down to Up
                 if (r + c == DIM - 1 && getField(r, c) == m) {
                     sumDiagonalRight++;
-                } else if (r + c == DIM - 1 && getField(r, c) != m) {
+                } else if ((r + c == DIM - 1 && getField(r, c) != m) && sumDiagonalRight < 4) {
                     sumDiagonalRight = 0;
                 }
             }
         }
+        return sumDiagonalLeftCenter > 4 || sumDiagonalRight > 4;
+    }
 
-        return sumDiagonalLeft >= 5 || sumDiagonalRight >= 5;
+    /**
+     * Checks if there's a diagonal of 5 above the central diagonal line.
+     * Checks both for going from Up to Down and Down to Up
+      * @param m
+     * @return
+     */
+    public boolean hasDiagonalAbove(Mark m) {
+        int sumDiagonalLeftUp = 0;
+        int sumDiagonalRightUp = 0;
+
+
+        for (int r = 0; r < DIM; r++) {
+            for (int c = 0; c < DIM; c++) {
+                //Check if r == c+1
+                //Going from Up to Down
+                if (r == c-1 && getField(r, c ) == m) {
+                    sumDiagonalLeftUp++;
+                //Going from Down to Up
+                }if (r + c == DIM - 2 && getField(r, c) == m) {
+                    sumDiagonalRightUp++;
+                }
+            }
+        }return sumDiagonalLeftUp > 4 || sumDiagonalRightUp >4;
+    }
+
+    public boolean hasDiagonalBelow(Mark m){
+        int sumDiagonalLeftBelow = 0;
+        int sumDiagonalRightBelow = 0;
+
+        for (int r = 0; r < DIM; r++) {
+            for (int c = 0; c < DIM; c++) {
+
+                //Check if r-1 == c
+                //Going from Up to Down
+                if (r-1 == c && getField(r, c ) == m) {
+                    sumDiagonalLeftBelow++;
+
+                //Going from Down to Up
+            }if (r + c == DIM  && getField(r, c) == m) {
+                sumDiagonalRightBelow++;
+            }
+
+            }
+        }return sumDiagonalLeftBelow > 4 || sumDiagonalRightBelow > 4;
+
     }
 
     /**
@@ -366,10 +420,8 @@ public class Board {
      *
      * @return true is board is full or if there's a winner
      */
-
     public boolean gameOver() {
         return isFull() || hasWinner();
     }
-
-
 }
+

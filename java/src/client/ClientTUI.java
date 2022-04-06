@@ -29,14 +29,13 @@ public class ClientTUI {
     } //--End of Main
 
     public void initiateTUI() {
-
         //-- Initial Input:
         connectToServer();
+        // Connection is now established and the player should enter a unique name:
+        playerLogin();
         // New thread is required for handling reading input from the sever
         this.tuiThread = (new Thread(client));
         this.tuiThread.start();
-        // Connection is now established and the player should enter a unique name:
-        playerLogin();
 
     }
 
@@ -51,10 +50,10 @@ public class ClientTUI {
             try {
                 // Get Address input //TODO check input
                 System.out.println("Give server address (Type \"localhost\" when playing on this device):\n");
-//                String addressInput = TextIO.getlnString();
-//                address = InetAddress.getByName(addressInput);
-                address = InetAddress.getByName("localhost");
-                System.out.println("\t " + address + " localhost for now selected\n");
+                String addressInput = TextIO.getlnString();
+                address = InetAddress.getByName(addressInput);
+                //address = InetAddress.getByName("localhost");
+                //System.out.println("\t " + address + " localhost for now selected\n");
             } catch (UnknownHostException e) {
                 System.out.println("This is not a valid address\n");
             }
@@ -62,12 +61,12 @@ public class ClientTUI {
             // Get Port input //TODO check input
             try {
                 System.out.println("Please enter a valid port number \n");
-//                int portInput = TextIO.getlnInt();
-//                if(correctPort(portInput)){
-//                   port = portInput;
-//                }
-                port = 8080;
-                System.out.println("\t Port is set at " + port);
+                int portInput = TextIO.getlnInt();
+                if(correctPort(portInput)){
+                   port = portInput;
+                }
+              //  port = 8080;
+              // System.out.println("\t Port is set at " + port);
             } catch (Exception e) {
                 System.out.println("This is an invalid port number\n");
                 continue;
@@ -98,23 +97,18 @@ public class ClientTUI {
      * @throws InterruptedException
      */
     public void playerQueue() throws InterruptedException {
-        String messageTUI;
+
         try {
-            printHelpMenu();
-            while ((!getGameStatus())) {
+            String messageTUI;
+            while ((!getGameStatus()) || !gameIsStarted) {
+                printHelpMenu();
                 messageTUI = TextIO.getln();
                 switch (StringUtils.toUpperCase(messageTUI)) {
-                    case "LIST":
-                        client.getList();
-                        break;
-                    case "QUEUE":
-                        client.sendQueue();
-                        break;
-                    case "QUIT":
-                        client.sendQuit();
-                        break;
-                    default:
-                        break;
+                    case "LIST" -> client.getList();
+                    case "QUEUE" -> client.sendQueue();
+                    case "QUIT" -> client.sendQuit();
+                    default -> {
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -178,18 +172,26 @@ public class ClientTUI {
      * Uses getGameStatus to prevent last move request
      */
     public void askMove() {
+        gameIsStarted = true;
         if (getGameStatus()) {
-            System.out.println(this.playerName+ " ("+ client.getMark() + "), it's your turn.");
+            System.out.println(this.playerName + " (" + client.getMark() + "), it's your turn.");
             String command = "MOVE~";
             //First ask where you want to place the marble
             System.out.println("Where do you want to place your mark?\n");
-            int marbleInput = TextIO.getlnInt();
-            command += marbleInput;
+            try {
+                int marbleInput = TextIO.getlnInt();
+                command += marbleInput;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             //Second ask for quadrant manipulation
             System.out.println("Enter quadrant movement value:");
-            int quadinput = TextIO.getlnInt();
-            command = command +"~"+quadinput;
-
+            try {
+                int quadinput = TextIO.getlnInt();
+                command = command + "~" + quadinput;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             client.sendMessage(command);
         }
 
@@ -207,7 +209,11 @@ public class ClientTUI {
             this.client.gameStatus = false;
             this.client.queueStatus = false;
             playerQueue();
-        } else client.sendQuit();
+
+        } else {
+            System.out.println("Quiting from game server");
+            this.client.sendQuit();
+        }
     }
 
 

@@ -75,34 +75,24 @@ public class Client implements Runnable {
         try {
             String line;
             while (this.activeClient && null != (line = this.inClient.readLine())) {
-                System.out.println("Server: " + line);
+                //System.out.println("Server: " + line);//Input checker
                 String[] commandSplit = line.split("~");
                 switch (commandSplit[0]) {
-                    case "LOGIN":
-                        myClientTUI.playerQueue();
-                        break;
-                    case "ALREADYLOGGEDIN":
+                    case "LOGIN" -> myClientTUI.playerQueue();
+                    case "ALREADYLOGGEDIN" -> {
                         System.out.println("Name already taken, please use a different name then " + this.playerName);
                         myClientTUI.playerLogin();
-                        break;
-                    case "LIST":
-                        this.showList(commandSplit);
-                        break;
-                    case "NEWGAME":
-                        newGameStart(commandSplit);
-                        break;
-                    case "ERROR":
-                        System.out.println("That move wasn't valid!\n");
+                    }
+                    case "LIST" -> this.showList(commandSplit);
+                    case "NEWGAME" -> newGameStart(commandSplit);
+                    case "ERROR" -> {
+                        System.out.println("That move and/or quadrant rotation wasn't valid!\n");
                         myClientTUI.askMove();
-                        break;
-                    case "MOVE":
-                        setMove(commandSplit);
-                        break;
-                    case "GAMEOVER":
-                        gameOverInput(commandSplit);
-                        break;
-                    default:
-                        break;
+                    }
+                    case "MOVE" -> setMove(commandSplit);
+                    case "GAMEOVER" -> gameOverInput(commandSplit);
+                    default -> {
+                    }
                 }
             }
         } catch (InterruptedException e) {
@@ -128,7 +118,7 @@ public class Client implements Runnable {
             myClientTUI.continuePlay();
 
         } else if (commandSplit[1].equals("VICTORY")) {
-            System.out.println("The player " + commandSplit[2] + " has a Victory\n");
+            System.out.println("The player " + commandSplit[2] + " has won!\n");
             myClientTUI.continuePlay();
 
         }
@@ -216,12 +206,12 @@ public class Client implements Runnable {
      *
      * @param playerName
      */
-    public void loginPlayer(String playerName) throws InterruptedException {
+    public void loginPlayer(String playerName)  {
         sendMessage("LOGIN~" + playerName);
     }
 
     /**
-     * Following QUIT command connection is terminated //TODO properly close TUI
+     * Following QUIT command connection is terminated
      */
     public void sendQuit() {
         try {
@@ -230,7 +220,6 @@ public class Client implements Runnable {
             this.sendMessage("QUIT~" + playerName);
             this.close();
             activeClient = false;
-            myClientTUI.tuiThread.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -245,10 +234,12 @@ public class Client implements Runnable {
         if (this.queueStatus) {
             System.out.println("Player: " + playerName + " in queue for Newgame, waiting for other queued player\n");
             this.gameStatus = true;
+            //Probleem is dat deze altijd input verwacht
             this.myClientTUI.playerQueue();
 
         } else {
             System.out.println("Player not in queue for newgame.\n");
+            //this.gameStatus = false;
             this.myClientTUI.playerQueue();
         }
 
@@ -260,8 +251,10 @@ public class Client implements Runnable {
      * @param commandSplit
      */
     public void newGameStart(String[] commandSplit) {
-        System.out.println("Starting new game with player 1: " + commandSplit[1] + " (XX) and player 2: " + commandSplit[2] + " (OO).\n");
         this.gameStatus = true; //get you out of the QUEUE loop
+
+        System.out.println("Starting new game with player 1: " + commandSplit[1] + " (XX) and player 2: " + commandSplit[2] + " (OO).\n");
+
         //Make sure the board is empty from possible previous game.
         board.reset();
 
@@ -269,12 +262,14 @@ public class Client implements Runnable {
 
         if (commandSplit[1].equals(this.playerName)) {
             this.mark = Mark.XX;
-            System.out.println("You are player 1: " + commandSplit[1] + " (" + this.mark + ") " );
+            System.out.println("You are player 1: " + commandSplit[1] + " (" + this.mark + ") \n" );
+            System.out.println("Please hit enter to continue.\n");
             this.playerTurn = true;
             myClientTUI.askMove();
         } else {
             this.mark = Mark.OO;
-            System.out.println("You are player 2: " + this.playerName + " (" + this.mark + ")  please wait for move from other player");
+            System.out.println("Please hit enter to continue.\n");
+            System.out.println("You are player 2: " + this.playerName + " (" + this.mark + ")  please wait for move from other player\n");
             this.playerTurn = false;
         }
 

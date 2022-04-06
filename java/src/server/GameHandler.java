@@ -1,7 +1,7 @@
 package server;
 
 /**
- * GameHandler is started when 2 players with queue active are matched
+ * GameHandler is started when 2 players with queue active are matched and follows the game rules
  * Communication goes through the ClientHandlers
  */
 
@@ -32,7 +32,6 @@ public class GameHandler {
 
     /**
      * Checks if provided move is valid
-     * TODO update for new input 6x6 grid
      *
      * @param moveInput move provided by player
      * @param quadInput rotation proved by player
@@ -60,7 +59,7 @@ public class GameHandler {
         System.out.println(" Current game situation: \n\n" + board.toString() + "\n");
 
         if (this.board.gameOver()) {
-            if (this.board.isFull()) {
+            if (this.board.isFull()||this.board.hasDrawMove()) {
                 this.players[0].sendCommand("GAMEOVER~DRAW");
                 this.players[1].sendCommand("GAMEOVER~DRAW");
                 //Send last move

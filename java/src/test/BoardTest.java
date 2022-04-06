@@ -136,34 +136,106 @@ public class BoardTest {
     }
 
     @Test
-    public void testHasDiagonal() {
-        //Check downwards
-        board.setField(00, Mark.XX);
-        board.setField(07, Mark.XX);
+    public void testHasDiagonaLeft() {
+        //Check downwards - Center Diagonal line
+        //board.setField(00, Mark.XX);
+        board.setField(7, Mark.XX);
         board.setField(14, Mark.XX);
         board.setField(28, Mark.XX);
         assertFalse(board.hasDiagonal(Mark.XX));
-        board.setField(35, Mark.XX);
-        System.out.println("\t\t This should show 5 XX diagonally but not consecutive downwards: \n\n" + board.toString() + "\n");
-        assertFalse(board.hasDiagonal(Mark.XX));
-        assertFalse(board.hasDiagonal(Mark.OO));
         board.setField(21, Mark.XX);
-        assertTrue(board.hasDiagonal(Mark.XX));
-        System.out.println("\t\t This should show 6 XX diagonally  consecutive downwards: \n\n" + board.toString() + "\n");
-        board.reset();
-        // Check upwards
-        board.setField(30, Mark.OO);
-        board.setField(25, Mark.OO);
-        board.setField(20, Mark.OO);
-        board.setField(10, Mark.OO);
-        board.setField(05, Mark.OO);
+        board.setField(35, Mark.XX);
+        //System.out.println("\t\t This should show 5 XX diagonally but not consecutive downwards: \n\n" + board.toString() + "\n");
         assertFalse(board.hasDiagonal(Mark.OO));
-        System.out.println("\t\t This should show 5 non-consecutive diagonally upwards for OO: \n\n" + board.toString() + "\n");
-        board.setField(15,Mark.OO);
-        assertTrue(board.hasDiagonal(Mark.OO));
-        assertFalse(board.hasDiagonal(Mark.XX));
-        System.out.println("\t\t This should show 6 marks consecutive diagonally upwards for OO: \n\n" + board.toString() + "\n");
+        assertTrue(board.hasDiagonal(Mark.XX));
 
-        System.out.println("If 4 boards show then the Diagonal Test was succesfull!");
+        System.out.println("\t\t This should show 5 XX diagonally  consecutive downwards: \n\n" + board.toString() + "\n");
+        board.reset();
+
+        // Check above the diagonal line
+        board.setField(1, Mark.OO);
+        board.setField(8, Mark.OO);
+        board.setField(15, Mark.OO);
+        board.setField(22, Mark.OO);
+        assertFalse(board.hasDiagonal(Mark.OO));
+        board.setField(29, Mark.OO);
+        System.out.println("\t\t This should show 5 consecutive diagonally downwards for OO: \n\n" + board.toString() + "\n");
+        assertTrue(board.hasDiagonalAbove(Mark.OO));
+
+        board.reset();
+        // This will check if there's 5 in a row below the
+        board.setField(6, Mark.OO);
+        board.setField(13, Mark.OO);
+        board.setField(20, Mark.OO);
+        board.setField(27, Mark.OO);
+        assertFalse(board.hasDiagonal(Mark.OO));
+        board.setField(34, Mark.OO);
+        System.out.println("\t\t This should show 5 consecutive diagonally downwards for OO: \n\n" + board.toString() + "\n");
+        assertTrue(board.hasDiagonalBelow(Mark.OO));
+
+    }
+
+    /**
+     *
+     */
+    @Test
+    public void testHasDiagonalRight() {
+        // Check upwards -Center Diagonal line
+        //board.setField(05, Mark.XX);
+        board.setField(30, Mark.XX);
+        board.setField(25, Mark.XX);
+        board.setField(20, Mark.XX);
+        assertFalse(board.hasDiagonal(Mark.XX));
+        board.setField(10, Mark.XX);
+        board.setField(15, Mark.XX);
+        System.out.println("\t\t This should show 5 XX diagonally but consecutive upwards: \n\n" + board.toString() + "\n");
+        assertFalse(board.hasDiagonal(Mark.OO));
+        assertTrue(board.hasDiagonal(Mark.XX));
+
+        board.reset();
+        // Check upwards- Above Diagonal Line
+
+        board.setField(24, Mark.XX);
+        board.setField(19, Mark.XX);
+        board.setField(14, Mark.XX);
+        board.setField(04, Mark.XX);
+        assertFalse(board.hasDiagonalAbove(Mark.XX));
+        board.setField(9, Mark.XX);
+        assertTrue(board.hasDiagonalAbove(Mark.XX));
+        System.out.println("\t\t This should show 5 consecutive diagonally upwards for XX: \n\n" + board.toString() + "\n");
+
+        board.reset();
+        board.setField(31, Mark.XX);
+        board.setField(26, Mark.XX);
+        board.setField(11, Mark.XX);
+        board.setField(16, Mark.XX);
+        assertFalse(board.hasDiagonalBelow(Mark.XX));
+        board.setField(21, Mark.XX);
+        assertTrue(board.hasDiagonalBelow(Mark.XX));
+        System.out.println("\t\t This should show 5 consecutive diagonally upwards for XX: \n\n" + board.toString() + "\n");
+
+
+    }
+
+    @Test
+    public void testHasTwoWinnersDraw(){
+        board.setField(0, Mark.XX);
+        board.setField(7, Mark.XX);
+        board.setField(14, Mark.XX);
+        board.setField(28, Mark.XX);
+        board.setField(23,Mark.XX);
+
+        board.setField(5, Mark.OO);
+        board.setField(11, Mark.OO);
+        board.setField(17, Mark.OO);
+        board.setField(35, Mark.OO);
+
+        System.out.println("\t\t 1. Setup, this should show a board with 2player" +
+                ": \n\n" + board.toString() + "\n");
+        board.setField(34,Mark.OO);
+        board.setQuad(6);
+        assertTrue(board.hasDrawMove());
+        System.out.println("\t\t 2. This should show a board with 2player DRAW" +
+                ": \n\n" + board.toString() + "\n");
     }
 }

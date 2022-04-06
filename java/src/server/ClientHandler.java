@@ -22,7 +22,7 @@ public class ClientHandler implements Runnable {
     private final PrintWriter chOut;
     private final Socket socket;
     private String playerName;
-    private boolean queueStatus;
+    private boolean queueStatus = false;
     private GameServer server;
     private GameHandler gameHandler;
     private Mark mark;
@@ -41,9 +41,7 @@ public class ClientHandler implements Runnable {
         return playerName;
     }
 
-    public boolean getQueue() {
-        return queueStatus;
-    }
+    public boolean getQueue() {return queueStatus; }
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
@@ -64,27 +62,19 @@ public class ClientHandler implements Runnable {
             try {
                 String message;
                 while ((message = chIn.readLine()) != null) {
-                    System.out.println("Client: " + message);
+                    //System.out.println("Client: " + message);
                     String[] messageSplit = message.split("~");
                     switch (toUpperCase(messageSplit[0])) {
-                        case "LOGIN":
-                            playerLogin(messageSplit[1]);
-                            break;
-                        case "LIST":
-                            sendList();
-                            break;
-                        case "QUEUE":
-                            updateQueue();
-                            break;
-                        case "MOVE":
-                            moveCH(messageSplit);
-                            break;
-                        case "QUIT":
+                        case "LOGIN" -> playerLogin(messageSplit[1]);
+                        case "LIST" -> sendList();
+                        case "QUEUE" -> updateQueue();
+                        case "MOVE" -> moveCH(messageSplit);
+                        case "QUIT" -> {
                             this.chOut.println(this.playerName + " is quiting from server");
                             this.close();
-                            break;
-                        default:
-                            break;
+                        }
+                        default -> {
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -99,13 +89,12 @@ public class ClientHandler implements Runnable {
 
     /**
      * Check move input and set it on gameHandler
-     * //TODO update to handle both inputs
      * @param messageSplit
      */
     private void moveCH(String[] messageSplit) {
         if (this.gameHandler.checkMove(messageSplit[1], messageSplit[2])) {
             this.gameHandler.doMove(messageSplit[1], messageSplit[2], this.mark);
-        } else sendCommand("ERROR");
+        } else {sendCommand("ERROR");}
     }
 
     /**
@@ -188,7 +177,7 @@ public class ClientHandler implements Runnable {
     /**
      * Switches the queue status following TUI input
      */
-    public void updateQueue() throws IOException {
+    public void updateQueue() {
         flipQueueState();
         server.checkQueues(this);
     }
